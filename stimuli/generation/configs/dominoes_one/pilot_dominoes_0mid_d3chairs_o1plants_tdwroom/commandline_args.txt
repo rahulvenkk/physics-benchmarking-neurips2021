@@ -1,3 +1,4 @@
+--save_meshes
 --no_moving_distractors
 --random
 0
@@ -36,7 +37,7 @@ None
 --zcolor
 None
 --num
-2
+3
 --save_labels
 --save_movies
 --room
@@ -55,3 +56,5 @@ coffee table,houseplant,vase,chair,dog,sofa,flowerpot,coffee maker,stool,laptop,
 0
 --occlusion_scale
 0.8
+--remove_target
+1

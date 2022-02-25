@@ -1,3 +1,5 @@
+--only_use_flex_objects
+--save_meshes
 --no_moving_distractors
 --random
 0
@@ -11,7 +13,7 @@
 0.5
 --fwait
 [30,30]
---fscale
+--fscale # for force
 0.75
 --mrot
 [-0,0]
@@ -25,20 +27,20 @@ None
 0.0
 --lateral_jitter
 0.0
---height
+--height #screen height
 512
---width
+--width #screen width
 512
---monochrome
+--monochrome  # Whether the objects will be set to the same color
 0
---tcolor
+--tcolor # target color, non is random
 None
---zcolor
+--zcolor # zone color, none is random
 None
---num
-2
+--num #number of trials
+28
 --save_labels
---save_movies
+--save_movies # this thing is overridden in the code
 --room
 tdw
 --num_distractors
