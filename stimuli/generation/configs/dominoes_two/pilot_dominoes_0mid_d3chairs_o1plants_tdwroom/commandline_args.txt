@@ -56,5 +56,3 @@ coffee table,houseplant,vase,chair,dog,sofa,flowerpot,coffee maker,stool,laptop,
 0
 --occlusion_scale
 0.8
---remove_target
-1

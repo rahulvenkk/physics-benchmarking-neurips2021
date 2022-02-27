@@ -77,22 +77,22 @@ do
   eval " $cmd"
 done
 
-group=readout
-seed=2
-multiplier=2.94 # 1000/340
-echo "Generating readout data"
-for arg_name in ../configs/$scenario/*
-do
-    case $arg_name in
-        (./*familiarization*) continue;;
-    esac
-    if [[ $scenario == 'roll' && $arg_name == *"collision"* ]]; then
-        controller_file=$controller_dir"/collide.py"
-    else
-        controller_file=$controller_dir"/"$scenario".py"
-    fi
-    subdir=`echo $(basename "$arg_name")`    
-    cmd="python3 "$controller_file" @$arg_name""/commandline_args.txt --dir "$output_dir"/"$scenario"/"$group"/"$subdir" --height "$height" --width "$width" --seed "$seed" --save_passes '' --write_passes '' --save_meshes --num_multiplier "$rmult" --readout_data_mode --gpu "$gpu
-    echo $cmd
-    eval " $cmd"
-done
+#group=readout
+#seed=2
+#multiplier=2.94 # 1000/340
+#echo "Generating readout data"
+#for arg_name in ../configs/$scenario/*
+#do
+#    case $arg_name in
+#        (./*familiarization*) continue;;
+#    esac
+#    if [[ $scenario == 'roll' && $arg_name == *"collision"* ]]; then
+#        controller_file=$controller_dir"/collide.py"
+#    else
+#        controller_file=$controller_dir"/"$scenario".py"
+#    fi
+#    subdir=`echo $(basename "$arg_name")`
+#    cmd="python3 "$controller_file" @$arg_name""/commandline_args.txt --dir "$output_dir"/"$scenario"/"$group"/"$subdir" --height "$height" --width "$width" --seed "$seed" --save_passes '' --write_passes '' --save_meshes --num_multiplier "$rmult" --readout_data_mode --gpu "$gpu
+#    echo $cmd
+#    eval " $cmd"
+#done

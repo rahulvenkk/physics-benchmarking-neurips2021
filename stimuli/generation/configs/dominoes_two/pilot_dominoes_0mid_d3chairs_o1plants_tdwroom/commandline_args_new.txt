@@ -1,3 +1,4 @@
+--only_use_flex_objects
 --save_meshes
 --no_moving_distractors
 --random
@@ -15,11 +16,11 @@
 --fscale
 0.75
 --mrot
-[-0,0]
+[-30,30]
 --prot
-[-0,0]
+[-60,60]
 --pscale
-[0.1,[0.5, 0.5],[0.25,0.25]]
+[0.1,[0.3,0.7],[0.2,0.3]]
 --pcolor
 None
 --spacing_jitter
@@ -37,13 +38,15 @@ None
 --zcolor
 None
 --num
-2000
+28
 --save_labels
+--save_passes
+_img
 --save_movies
 --room
 tdw
 --num_distractors
-0
+3
 --distractor
 full
 --distractor_categories
@@ -53,8 +56,6 @@ full
 --occluder_categories
 coffee table,houseplant,vase,chair,dog,sofa,flowerpot,coffee maker,stool,laptop,laptop computer,globe,bookshelf,desktop computer,garden plant,garden plant,garden plant
 --num_occluders
-0
+1
 --occlusion_scale
 0.8
---remove_target
-1
