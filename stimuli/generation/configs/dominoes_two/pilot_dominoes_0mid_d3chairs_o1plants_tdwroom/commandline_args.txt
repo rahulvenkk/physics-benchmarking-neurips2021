@@ -37,7 +37,7 @@ None
 --zcolor
 None
 --num
-2000
+10
 --save_labels
 --save_movies
 --room
