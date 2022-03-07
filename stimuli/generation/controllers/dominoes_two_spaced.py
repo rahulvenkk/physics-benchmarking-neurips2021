@@ -1292,7 +1292,7 @@ class Dominoes(RigidbodiesDataset):
 
         #dynamic
         # self.probe_initial_position = {"x": -0.5*self.collision_axis_length, "y": 0., "z": 0.}
-        rand_x = random.uniform(-1 * self.collision_axis_length, -0.1 * self.collision_axis_length)
+        rand_x = random.uniform(-0.5 * self.collision_axis_length, 0.5 * self.collision_axis_length)
 
         self.probe_initial_position = {"x": rand_x, "y": 0., "z": 0.}
         rot = self.get_y_rotation(self.probe_rotation_range)

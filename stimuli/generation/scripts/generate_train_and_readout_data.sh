@@ -15,6 +15,10 @@ case $scenario in
   tmult=1
   rmult=1
   ;;
+  "dominoes_two")
+  tmult=1
+  rmult=1
+  ;;
     "support")
 	tmult=9.1
 	rmult=4.55
