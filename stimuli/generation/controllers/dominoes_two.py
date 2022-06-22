@@ -131,6 +131,10 @@ def get_args(dataset_dir: str, parse=True):
                         type=str,
                         default="[0,0]",
                         help="range of angles in xz plane to apply push force")
+    parser.add_argument("--probe_x_range",
+                        type=str,
+                        default="[-2,0.1]",
+                        help="range of x axis locations for probe")
     parser.add_argument("--foffset",
                         type=str,
                         default="0.0,0.8,0.0",
@@ -299,6 +303,7 @@ def get_args(dataset_dir: str, parse=True):
                         action="store_true",
                         help="Probe and target will have the same color.")
 
+
     def postprocess(args):
 
         # testing set data drew from a different set of models; needs to be preserved
@@ -349,6 +354,8 @@ def get_args(dataset_dir: str, parse=True):
         args.foffset = handle_random_transform_args(args.foffset)
         args.fwait = handle_random_transform_args(args.fwait)
 
+        args.probe_x_range = handle_random_transform_args(args.probe_x_range)
+        # print("probe_x_range", args.probe_x_range)
         args.horizontal = bool(args.horizontal)
 
         # occluders and distrators
@@ -585,6 +592,7 @@ class Dominoes(RigidbodiesDataset):
                  match_probe_and_target_color=False,
                  probe_horizontal=False,
                  use_test_mode_colors=False,
+                 probe_x_range = [-2, 0.1],
                  **kwargs):
 
         ## get random port unless one is specified
@@ -600,6 +608,8 @@ class Dominoes(RigidbodiesDataset):
 
         ## which model libraries can be sampled from
         self.model_libraries = model_libraries
+
+        self.probe_x_range = probe_x_range
 
         ## whether only flex objects are allowed
         self.flex_only = flex_only
@@ -1223,7 +1233,7 @@ class Dominoes(RigidbodiesDataset):
 
         # Where to put the target
         if self.target_rotation is None:
-            self.target_rotation = self.get_rotation(self.target_rotation_range)
+            self.target_rotation = self.get_y_rotation(self.target_rotation_range)
 
         if self.target_position is None:
             self.target_position = {
@@ -1292,11 +1302,13 @@ class Dominoes(RigidbodiesDataset):
 
         #dynamic
         # self.probe_initial_position = {"x": -0.5*self.collision_axis_length, "y": 0., "z": 0.}
-        rand_x = random.uniform(-1 * self.collision_axis_length, -0.1 * self.collision_axis_length)
+        rand_x = random.uniform(self.probe_x_range[0] * self.collision_axis_length, self.probe_x_range[1]  * self.collision_axis_length)
 
         self.probe_initial_position = {"x": rand_x, "y": 0., "z": 0.}
         rot = self.get_y_rotation(self.probe_rotation_range)
-        if self.probe_horizontal:
+
+        # print("self.probe_rotation_range", self.probe_rotation_range, "self.probe_horizontal", self.probe_horizontal)
+        if self.probe_horizontal: # this is always false
             rot["z"] = 90
             self.probe_initial_position["z"] += -np.sin(np.radians(rot["y"])) * scale["y"] * 0.5
             self.probe_initial_position["x"] += np.cos(np.radians(rot["y"])) * scale["y"] * 0.5
@@ -2132,7 +2144,8 @@ if __name__ == "__main__":
         flex_only=args.only_use_flex_objects,
         no_moving_distractors=args.no_moving_distractors,
         match_probe_and_target_color=args.match_probe_and_target_color,
-        use_test_mode_colors=args.use_test_mode_colors
+        use_test_mode_colors=args.use_test_mode_colors,
+        probe_x_range=args.probe_x_range,
     )
 
     if bool(args.run):

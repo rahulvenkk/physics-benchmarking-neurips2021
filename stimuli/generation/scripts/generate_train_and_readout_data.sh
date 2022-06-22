@@ -2,9 +2,10 @@
 
 # defaults after -
 scenario=${1-"dominoes"}
-output_dir=${2-$HOME"/physion_data"}
-controller_dir=${3-"../controllers"}
-gpu=${4-"0"}
+save_name=${2-"dominoes"}
+output_dir=${3-$HOME"/physion_data"}
+controller_dir=${4-"../controllers"}
+gpu=${5-"0"}
 
 case $scenario in
     "dominoes")
@@ -17,7 +18,8 @@ case $scenario in
   ;;
   "dominoes_two")
   tmult=1
-  rmult=1
+  rmult=0.5
+  ttmult=0.2
   ;;
     "support")
 	tmult=9.1
@@ -61,11 +63,31 @@ echo $rmult
 height=256
 width=256
 
-group=train
-seed=0
-echo "Generating training data"
+#group=train
+#seed=0
+#echo "Generating training data"
+#
+#for arg_name in ../configs/$save_name/*
+#do
+#  case $arg_name in
+#      (./*familiarization*) continue;;
+#  esac
+#  if [[ $scenario == 'roll' && $arg_name == *"collision"* ]]; then
+#      controller_file=$controller_dir"/collide.py"
+#  else
+#      controller_file=$controller_dir"/"$scenario".py"
+#  fi
+#  subdir=`echo $(basename "$arg_name")`
+#  cmd="python3 "$controller_file" @$arg_name""/commandline_args.txt --dir "$output_dir"/"$save_name"/"$group"/"$subdir" --height "$height" --width "$width" --seed "$seed" --save_passes '' --write_passes '' --save_meshes --num_multiplier "$tmult" --training_data_mode --gpu "$gpu
+#  echo $cmd
+#  eval " $cmd"
+#done
 
-for arg_name in ../configs/$scenario/*
+group=readout
+seed=0
+echo "Generating readout data"
+
+for arg_name in ../configs/$save_name/*
 do
   case $arg_name in
       (./*familiarization*) continue;;
@@ -76,27 +98,28 @@ do
       controller_file=$controller_dir"/"$scenario".py"
   fi
   subdir=`echo $(basename "$arg_name")`
-  cmd="python3 "$controller_file" @$arg_name""/commandline_args.txt --dir "$output_dir"/"$scenario"/"$group"/"$subdir" --height "$height" --width "$width" --seed "$seed" --save_passes '' --write_passes '' --save_meshes --num_multiplier "$tmult" --training_data_mode --gpu "$gpu
+  cmd="python3 "$controller_file" @$arg_name""/commandline_args.txt --dir "$output_dir"/"$save_name"/"$group"/"$subdir" --height "$height" --width "$width" --seed "$seed" --save_passes '' --write_passes '' --save_meshes --num_multiplier "$rmult" --training_data_mode --gpu "$gpu
   echo $cmd
   eval " $cmd"
 done
 
-#group=readout
-#seed=2
-#multiplier=2.94 # 1000/340
-#echo "Generating readout data"
-#for arg_name in ../configs/$scenario/*
-#do
-#    case $arg_name in
-#        (./*familiarization*) continue;;
-#    esac
-#    if [[ $scenario == 'roll' && $arg_name == *"collision"* ]]; then
-#        controller_file=$controller_dir"/collide.py"
-#    else
-#        controller_file=$controller_dir"/"$scenario".py"
-#    fi
-#    subdir=`echo $(basename "$arg_name")`
-#    cmd="python3 "$controller_file" @$arg_name""/commandline_args.txt --dir "$output_dir"/"$scenario"/"$group"/"$subdir" --height "$height" --width "$width" --seed "$seed" --save_passes '' --write_passes '' --save_meshes --num_multiplier "$rmult" --readout_data_mode --gpu "$gpu
-#    echo $cmd
-#    eval " $cmd"
-#done
+group=test
+seed=0
+echo "Generating test data"
+
+for arg_name in ../configs/$save_name/*
+do
+  case $arg_name in
+      (./*familiarization*) continue;;
+  esac
+  if [[ $scenario == 'roll' && $arg_name == *"collision"* ]]; then
+      controller_file=$controller_dir"/collide.py"
+  else
+      controller_file=$controller_dir"/"$scenario".py"
+  fi
+  subdir=`echo $(basename "$arg_name")`
+  cmd="python3 "$controller_file" @$arg_name""/commandline_args.txt --dir "$output_dir"/"$save_name"/"$group"/"$subdir" --height "$height" --width "$width" --seed "$seed" --save_passes '' --write_passes '' --save_meshes --num_multiplier "$ttmult" --training_data_mode --gpu "$gpu
+  echo $cmd
+  eval " $cmd"
+done
+
